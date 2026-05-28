@@ -1,21 +1,60 @@
 // ============================================================
-// projetofinal — Sushi & Sashimi Bar
+// projetofinal - Sushi & Sashimi Bar
 // Aluno: Roberto Atila Almeida Azevedo
-// ETEC Jacinto Ferreira de Sá — Informática para Internet
+// ETEC Jacinto Ferreira de Sa - Informatica para Internet
 // Entrega: 11 de junho
-// Arquivo único: App.js
+// Arquivo unico: App.js
 // ============================================================
 
 import React, { useState } from 'react';
 import {
-    View, Text, Image, TouchableOpacity, FlatList,
+    View, Text, Image, Pressable, FlatList,
     StyleSheet, SafeAreaView, StatusBar, ScrollView,
     TextInput, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+const COLORS = {
+    bg: '#FFF8EE',
+    surface: '#FFFFFF',
+    header: '#17131F',
+    headerSoft: '#211B2A',
+    ink: '#241B18',
+    muted: '#7C6E66',
+    mutedLight: '#A99B90',
+    line: '#E9DCC9',
+    red: '#B83232',
+    redDark: '#7F2424',
+    gold: '#D8B45A',
+    goldSoft: '#F8E8BB',
+    cream: '#FFF1D8',
+};
+
+const SHADOWS = {
+    soft: Platform.select({
+        ios: {
+            shadowColor: '#4A2418',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.08,
+            shadowRadius: 18,
+        },
+        android: { elevation: 3 },
+        default: {},
+    }),
+    header: Platform.select({
+        ios: {
+            shadowColor: '#170F0C',
+            shadowOffset: { width: 0, height: 8 },
+            shadowOpacity: 0.18,
+            shadowRadius: 16,
+        },
+        android: { elevation: 8 },
+        default: {},
+    }),
+};
+
 // ─────────────────────────────────────────────────────────────
-// DADOS — Horários de funcionamento
+// DADOS - Horarios de funcionamento
 // ─────────────────────────────────────────────────────────────
 const HORARIOS = [
     { dia: 'Domingo', abertura: '12:00', fechamento: '22:00' },
@@ -28,7 +67,7 @@ const HORARIOS = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// DADOS — Cardápio (10 itens obrigatórios)
+// DADOS - Cardapio (10 itens obrigatorios)
 // Para a entrega final: substituir "imagem" por
 //   require('./assets/produto1.jpg')
 // ─────────────────────────────────────────────────────────────
@@ -46,7 +85,7 @@ const CARDAPIO = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// UTILITÁRIO — Verifica se está aberto agora
+// UTILITARIO - Verifica se esta aberto agora
 // ─────────────────────────────────────────────────────────────
 function verificarAberto() {
     const agora = new Date();
@@ -61,59 +100,80 @@ function verificarAberto() {
     return fecha < abre ? (min >= abre || min < fecha) : (min >= abre && min < fecha);
 }
 
+function formatarPreco(valor) {
+    return valor.toFixed(2).replace('.', ',');
+}
+
 // ─────────────────────────────────────────────────────────────
-// COMPONENTE — Header fixo
-// Logo, nome, endereço, telefone, acordeão de horários,
-// indicador Aberto / Fechado
+// COMPONENTE - Header fixo
 // ─────────────────────────────────────────────────────────────
 function Header() {
     const [painelAberto, setPainelAberto] = useState(false);
     const aberto = verificarAberto();
+    const hoje = new Date().getDay();
 
     return (
         <View style={s.headerWrapper}>
-            {/* Linha principal */}
+            <View style={s.headerTopLine} />
+
             <View style={s.headerRow}>
-                {/* Logo — substituir por <Image source={require('./assets/logo.png')} ...> */}
                 <View style={s.logoBox}>
-                    <Text style={s.logoEmoji}>🍣</Text>
+                    <Ionicons name="restaurant-outline" size={26} color={COLORS.gold} />
                 </View>
 
-                {/* Informações do estabelecimento */}
                 <View style={s.headerInfo}>
-                    <Text style={s.headerNome}>Hiroshima & Nagasaki</Text>
-                    <Text style={s.headerDetalhe}>📍 Av. Kamikaze, 1945 — Centro</Text>
-                    <Text style={s.headerDetalhe}>📞 (14) 99767-6988</Text>
+                    <Text style={s.headerEyebrow}>Sushi & Sashimi Bar</Text>
+                    <Text style={s.headerNome} numberOfLines={1}>Hiroshima & Nagasaki</Text>
+
+                    <View style={s.headerMetaRow}>
+                        <Ionicons name="location-outline" size={12} color={COLORS.gold} />
+                        <Text style={s.headerDetalhe} numberOfLines={1}>Av. Kamikaze, 1945 - Centro</Text>
+                    </View>
+                    <View style={s.headerMetaRow}>
+                        <Ionicons name="call-outline" size={12} color={COLORS.gold} />
+                        <Text style={s.headerDetalhe} numberOfLines={1}>(14) 99767-6988</Text>
+                    </View>
                 </View>
 
-                {/* Indicador Aberto / Fechado */}
                 <View style={[s.badge, aberto ? s.badgeAberto : s.badgeFechado]}>
+                    <View style={[s.badgeDot, aberto ? s.badgeDotAberto : s.badgeDotFechado]} />
                     <Text style={s.badgeTxt}>{aberto ? 'ABERTO' : 'FECHADO'}</Text>
                 </View>
             </View>
 
-            {/* Botão acordeão */}
-            <TouchableOpacity
-                style={s.btnHorarios}
+            <Pressable
+                style={({ pressed }) => [s.btnHorarios, pressed && s.pressedDark]}
                 onPress={() => setPainelAberto(!painelAberto)}
-                activeOpacity={0.75}
+                accessibilityRole="button"
+                accessibilityLabel="Ver horarios de funcionamento"
             >
-                <Ionicons name="time-outline" size={13} color="#E8C547" />
-                <Text style={s.btnHorariosTxt}>Ver horários de funcionamento</Text>
-                <Ionicons name={painelAberto ? 'chevron-up' : 'chevron-down'} size={13} color="#E8C547" />
-            </TouchableOpacity>
+                <View style={s.btnHorariosLeft}>
+                    <Ionicons name="time-outline" size={15} color={COLORS.gold} />
+                    <Text style={s.btnHorariosTxt}>Horários de funcionamento</Text>
+                </View>
+                <Ionicons name={painelAberto ? 'chevron-up' : 'chevron-down'} size={15} color={COLORS.gold} />
+            </Pressable>
 
-            {/* Painel de horários (acordeão) */}
             {painelAberto && (
                 <View style={s.painel}>
-                    {HORARIOS.map((h, i) => (
-                        <View key={i} style={s.linhaHorario}>
-                            <Text style={s.horarioDia}>{h.dia}</Text>
-                            <Text style={[s.horarioHora, !h.abertura && s.horarioFechado]}>
-                                {h.abertura ? `${h.abertura} – ${h.fechamento}` : 'Fechado'}
-                            </Text>
-                        </View>
-                    ))}
+                    {HORARIOS.map((h, i) => {
+                        const ativoHoje = i === hoje;
+                        return (
+                            <View key={h.dia} style={[s.linhaHorario, ativoHoje && s.linhaHorarioHoje]}>
+                                <View style={s.horarioDiaGrupo}>
+                                    <View style={[s.horarioMarcador, ativoHoje && s.horarioMarcadorHoje]} />
+                                    <Text style={[s.horarioDia, ativoHoje && s.horarioDiaHoje]}>{h.dia}</Text>
+                                </View>
+                                <Text style={[
+                                    s.horarioHora,
+                                    !h.abertura && s.horarioFechado,
+                                    ativoHoje && h.abertura && s.horarioHoraHoje,
+                                ]}>
+                                    {h.abertura ? `${h.abertura} - ${h.fechamento}` : 'Fechado'}
+                                </Text>
+                            </View>
+                        );
+                    })}
                 </View>
             )}
         </View>
@@ -121,25 +181,39 @@ function Header() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// COMPONENTE — ProductCard (reutilizável)
+// COMPONENTE - ProductCard reutilizavel
 // ─────────────────────────────────────────────────────────────
 function ProductCard({ produto }) {
     return (
         <View style={s.card}>
-            {/* Imagem do produto */}
-            <Image source={{ uri: produto.imagem }} style={s.cardImg} resizeMode="cover" />
+            <View style={s.cardImageWrap}>
+                <Image source={{ uri: produto.imagem }} style={s.cardImg} resizeMode="cover" />
+                <View style={s.cardImageShade} />
+            </View>
 
             <View style={s.cardInfo}>
-                <Text style={s.cardNome} numberOfLines={1}>{produto.nome}</Text>
-                <Text style={s.cardDesc} numberOfLines={2}>{produto.descricao}</Text>
+                <View>
+                    <View style={s.cardTitleRow}>
+                        <Text style={s.cardNome} numberOfLines={1}>{produto.nome}</Text>
+                    </View>
+                    <Text style={s.cardDesc} numberOfLines={2}>{produto.descricao}</Text>
+                </View>
 
-                {/* Preço + botão Adicionar */}
                 <View style={s.cardRodape}>
-                    <Text style={s.cardPreco}>R$ {produto.preco.toFixed(2)}</Text>
-                    {/* Botão layout apenas — carrinho será programado depois */}
-                    <TouchableOpacity style={s.btnAdicionar} activeOpacity={0.8}>
-                        <Text style={s.btnAdicionarTxt}>+ Adicionar</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <Text style={s.precoLabel}>A partir de</Text>
+                        <Text style={s.cardPreco}>R$ {formatarPreco(produto.preco)}</Text>
+                    </View>
+
+                    <Pressable
+                        style={({ pressed }) => [s.btnAdicionar, pressed && s.btnAdicionarPressed]}
+                        onPress={() => {}}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Adicionar ${produto.nome}`}
+                    >
+                        <Ionicons name="add" size={16} color={COLORS.cream} />
+                        <Text style={s.btnAdicionarTxt}>Adicionar</Text>
+                    </Pressable>
                 </View>
             </View>
         </View>
@@ -147,7 +221,7 @@ function ProductCard({ produto }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// COMPONENTE — Footer fixo com navegação
+// COMPONENTE - Footer fixo com navegacao
 // ─────────────────────────────────────────────────────────────
 const NAV = [
     { key: 'home', label: 'Home', icon: 'home-outline', iconOn: 'home' },
@@ -157,121 +231,207 @@ const NAV = [
 
 function FooterNav({ telaAtiva, onNavegar }) {
     return (
-        <View style={s.footer}>
-            {NAV.map(item => {
-                const on = telaAtiva === item.key;
-                return (
-                    <TouchableOpacity
-                        key={item.key}
-                        style={s.navItem}
-                        onPress={() => onNavegar(item.key)}
-                        activeOpacity={0.7}
-                    >
-                        <Ionicons name={on ? item.iconOn : item.icon} size={24} color={on ? '#B71C1C' : '#9E9E9E'} />
-                        <Text style={[s.navLabel, on && s.navLabelOn]}>{item.label}</Text>
-                    </TouchableOpacity>
-                );
-            })}
+        <View style={s.footerOuter}>
+            <View style={s.footer}>
+                {NAV.map(item => {
+                    const on = telaAtiva === item.key;
+                    return (
+                        <Pressable
+                            key={item.key}
+                            style={({ pressed }) => [s.navItem, on && s.navItemOn, pressed && s.navItemPressed]}
+                            onPress={() => onNavegar(item.key)}
+                            accessibilityRole="button"
+                            accessibilityState={{ selected: on }}
+                        >
+                            <Ionicons name={on ? item.iconOn : item.icon} size={22} color={on ? COLORS.red : COLORS.mutedLight} />
+                            <Text style={[s.navLabel, on && s.navLabelOn]}>{item.label}</Text>
+                        </Pressable>
+                    );
+                })}
+            </View>
         </View>
     );
 }
 
 // ─────────────────────────────────────────────────────────────
-// TELA — Home (FlatList com cardápio)
+// TELA - Home
 // ─────────────────────────────────────────────────────────────
+function MenuHeader() {
+    return (
+        <View style={s.listHeader}>
+            <View style={s.sectionKicker}>
+                <View style={s.kickerLine} />
+                <Text style={s.kickerText}>Seleção da casa</Text>
+            </View>
+
+            <View style={s.menuTitleRow}>
+                <View style={s.menuTitleGroup}>
+                    <Text style={s.listTitulo}>Cardápio</Text>
+                    <Text style={s.listSub}>Sushis e sashimis preparados para pedido rápido.</Text>
+                </View>
+                <View style={s.menuCountPill}>
+                    <Ionicons name="restaurant-outline" size={14} color={COLORS.red} />
+                    <Text style={s.menuCountTxt}>10 itens</Text>
+                </View>
+            </View>
+        </View>
+    );
+}
+
 function HomeScreen() {
     return (
         <FlatList
             data={CARDAPIO}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <ProductCard produto={item} />}
-            ListHeaderComponent={
-                <View style={s.listHeader}>
-                    <Text style={s.listTitulo}>🍣  Cardápio</Text>
-                    <Text style={s.listSub}>Seleção artesanal de sushis e sashimis</Text>
-                </View>
-            }
-            ListFooterComponent={<View style={{ height: 14 }} />}
+            ListHeaderComponent={<MenuHeader />}
+            ListFooterComponent={<View style={s.listFooterSpace} />}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ backgroundColor: '#F8F5F0', paddingTop: 4 }}
+            contentContainerStyle={s.listContent}
         />
     );
 }
 
 // ─────────────────────────────────────────────────────────────
-// TELA — Pedidos (placeholder)
+// TELA - Pedidos
 // ─────────────────────────────────────────────────────────────
 function OrdersScreen() {
     return (
-        <View style={s.placeholder}>
-            <Ionicons name="receipt-outline" size={72} color="#C0B8B0" />
-            <Text style={s.placeholderTitulo}>Seus Pedidos</Text>
-            <Text style={s.placeholderSub}>Em breve você acompanha seus{'\n'}pedidos em tempo real aqui.</Text>
+        <View style={s.emptyState}>
+            <View style={s.emptyIconBox}>
+                <Ionicons name="receipt-outline" size={48} color={COLORS.red} />
+            </View>
+            <Text style={s.emptyKicker}>Acompanhamento</Text>
+            <Text style={s.placeholderTitulo}>Seus pedidos aparecem aqui</Text>
+            <Text style={s.placeholderSub}>
+                Quando o carrinho for implementado, esta tela pode mostrar status,
+                itens escolhidos e previsao de entrega.
+            </Text>
+            <View style={s.emptyDivider} />
+            <Text style={s.emptyHint}>Versão atual: tela preparada para a próxima etapa.</Text>
         </View>
     );
 }
 
 // ─────────────────────────────────────────────────────────────
-// TELA — Perfil (formulário)
+// TELA - Perfil
 // ─────────────────────────────────────────────────────────────
 function ProfileForm() {
+    const [focused, setFocused] = useState(null);
     const [form, setForm] = useState({
         nomeCompleto: '', telefone: '',
         logradouro: '', numero: '', complemento: '', bairro: '',
     });
     const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
+    const inputStyle = field => [s.input, focused === field && s.inputFocus];
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
             <ScrollView style={s.formContainer} contentContainerStyle={s.formConteudo} showsVerticalScrollIndicator={false}>
-
                 <View style={s.formCabecalho}>
+                    <Text style={s.formKicker}>Perfil de entrega</Text>
                     <Text style={s.formTitulo}>Meu Perfil</Text>
-                    <Text style={s.formSub}>Preencha seus dados para entrega</Text>
+                    <Text style={s.formSub}>Preencha seus dados para agilizar futuros pedidos.</Text>
                 </View>
 
-                <Text style={s.secao}>Dados Pessoais</Text>
-
-                <Text style={s.label}>Nome completo *</Text>
-                <TextInput style={s.input} value={form.nomeCompleto} onChangeText={v => set('nomeCompleto', v)}
-                    placeholder="Ex: Kenji Yamamoto" placeholderTextColor="#BDBDBD" autoCapitalize="words" />
-
-                <Text style={s.label}>Telefone *</Text>
-                <TextInput style={s.input} value={form.telefone} onChangeText={v => set('telefone', v)}
-                    placeholder="(14) 99999-9999" placeholderTextColor="#BDBDBD" keyboardType="phone-pad" />
-
-                <Text style={s.secao}>Endereço de Entrega</Text>
-
-                <Text style={s.label}>Logradouro *</Text>
-                <TextInput style={s.input} value={form.logradouro} onChangeText={v => set('logradouro', v)}
-                    placeholder="Rua, Avenida..." placeholderTextColor="#BDBDBD" autoCapitalize="words" />
-
-                {/* Número e Complemento lado a lado */}
-                <View style={{ flexDirection: 'row', gap: 12 }}>
-                    <View style={{ flex: 0.38 }}>
-                        <Text style={s.label}>Número *</Text>
-                        <TextInput style={s.input} value={form.numero} onChangeText={v => set('numero', v)}
-                            placeholder="512" placeholderTextColor="#BDBDBD" keyboardType="numeric" />
+                <View style={s.formSection}>
+                    <View style={s.formSectionHeader}>
+                        <Ionicons name="person-outline" size={18} color={COLORS.red} />
+                        <Text style={s.secao}>Dados Pessoais</Text>
                     </View>
-                    <View style={{ flex: 0.58 }}>
-                        <Text style={s.label}>Complemento</Text>
-                        <TextInput style={s.input} value={form.complemento} onChangeText={v => set('complemento', v)}
-                            placeholder="Apto, Bloco..." placeholderTextColor="#BDBDBD" />
-                    </View>
+
+                    <Text style={s.label}>Nome completo *</Text>
+                    <TextInput
+                        style={inputStyle('nomeCompleto')}
+                        value={form.nomeCompleto}
+                        onChangeText={v => set('nomeCompleto', v)}
+                        onFocus={() => setFocused('nomeCompleto')}
+                        onBlur={() => setFocused(null)}
+                        placeholder="Ex: Kenji Yamamoto"
+                        placeholderTextColor="#B8A99F"
+                        autoCapitalize="words"
+                    />
+
+                    <Text style={s.label}>Telefone *</Text>
+                    <TextInput
+                        style={inputStyle('telefone')}
+                        value={form.telefone}
+                        onChangeText={v => set('telefone', v)}
+                        onFocus={() => setFocused('telefone')}
+                        onBlur={() => setFocused(null)}
+                        placeholder="(14) 99999-9999"
+                        placeholderTextColor="#B8A99F"
+                        keyboardType="phone-pad"
+                    />
                 </View>
 
-                <Text style={s.label}>Bairro *</Text>
-                <TextInput style={s.input} value={form.bairro} onChangeText={v => set('bairro', v)}
-                    placeholder="Centro" placeholderTextColor="#BDBDBD" autoCapitalize="words" />
+                <View style={s.formSection}>
+                    <View style={s.formSectionHeader}>
+                        <Ionicons name="location-outline" size={18} color={COLORS.red} />
+                        <Text style={s.secao}>Endereço de Entrega</Text>
+                    </View>
 
-                <Text style={s.formNota}>* Obrigatório — dados não persistidos nesta versão</Text>
+                    <Text style={s.label}>Logradouro *</Text>
+                    <TextInput
+                        style={inputStyle('logradouro')}
+                        value={form.logradouro}
+                        onChangeText={v => set('logradouro', v)}
+                        onFocus={() => setFocused('logradouro')}
+                        onBlur={() => setFocused(null)}
+                        placeholder="Rua, Avenida..."
+                        placeholderTextColor="#B8A99F"
+                        autoCapitalize="words"
+                    />
+
+                    <View style={s.formRow}>
+                        <View style={s.numeroCol}>
+                            <Text style={s.label}>Número *</Text>
+                            <TextInput
+                                style={inputStyle('numero')}
+                                value={form.numero}
+                                onChangeText={v => set('numero', v)}
+                                onFocus={() => setFocused('numero')}
+                                onBlur={() => setFocused(null)}
+                                placeholder="512"
+                                placeholderTextColor="#B8A99F"
+                                keyboardType="numeric"
+                            />
+                        </View>
+                        <View style={s.complementoCol}>
+                            <Text style={s.label}>Complemento</Text>
+                            <TextInput
+                                style={inputStyle('complemento')}
+                                value={form.complemento}
+                                onChangeText={v => set('complemento', v)}
+                                onFocus={() => setFocused('complemento')}
+                                onBlur={() => setFocused(null)}
+                                placeholder="Apto, Bloco..."
+                                placeholderTextColor="#B8A99F"
+                            />
+                        </View>
+                    </View>
+
+                    <Text style={s.label}>Bairro *</Text>
+                    <TextInput
+                        style={inputStyle('bairro')}
+                        value={form.bairro}
+                        onChangeText={v => set('bairro', v)}
+                        onFocus={() => setFocused('bairro')}
+                        onBlur={() => setFocused(null)}
+                        placeholder="Centro"
+                        placeholderTextColor="#B8A99F"
+                        autoCapitalize="words"
+                    />
+                </View>
+
+                <Text style={s.formNota}>* Obrigatório - dados não persistidos nesta versão</Text>
             </ScrollView>
         </KeyboardAvoidingView>
     );
 }
 
 // ─────────────────────────────────────────────────────────────
-// COMPONENTE RAIZ — App
+// COMPONENTE RAIZ - App
 // ─────────────────────────────────────────────────────────────
 export default function App() {
     const [telaAtiva, setTelaAtiva] = useState('home');
@@ -287,9 +447,9 @@ export default function App() {
 
     return (
         <SafeAreaView style={s.root}>
-            <StatusBar backgroundColor="#1A1A2E" barStyle="light-content" />
+            <StatusBar backgroundColor={COLORS.header} barStyle="light-content" />
             <Header />
-            <View style={{ flex: 1 }}>{renderTela()}</View>
+            <View style={s.screen}>{renderTela()}</View>
             <FooterNav telaAtiva={telaAtiva} onNavegar={setTelaAtiva} />
         </SafeAreaView>
     );
@@ -299,105 +459,546 @@ export default function App() {
 // ESTILOS
 // ─────────────────────────────────────────────────────────────
 const s = StyleSheet.create({
-    // Root
-    root: { flex: 1, backgroundColor: '#F8F5F0' },
+    flex: { flex: 1 },
+    root: {
+        flex: 1,
+        backgroundColor: COLORS.bg,
+    },
+    screen: {
+        flex: 1,
+        backgroundColor: COLORS.bg,
+    },
 
-    // ── Header ──────────────────────────────────────────────────
+    // Header
     headerWrapper: {
-        backgroundColor: '#1A1A2E',
-        elevation: 6,
-        shadowColor: '#000', shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.25, shadowRadius: 4, zIndex: 100,
+        backgroundColor: COLORS.header,
+        borderBottomLeftRadius: 22,
+        borderBottomRightRadius: 22,
+        overflow: 'hidden',
+        zIndex: 100,
+        ...SHADOWS.header,
     },
-    headerRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10 },
+    headerTopLine: {
+        height: 3,
+        backgroundColor: COLORS.gold,
+        opacity: 0.9,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingTop: 14,
+        paddingBottom: 12,
+    },
     logoBox: {
-        width: 52, height: 52, borderRadius: 26,
-        backgroundColor: '#2D2D44', justifyContent: 'center', alignItems: 'center',
-        marginRight: 10, borderWidth: 1, borderColor: '#E8C547',
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        backgroundColor: COLORS.headerSoft,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(216,180,90,0.55)',
     },
-    logoEmoji: { fontSize: 28 },
-    headerInfo: { flex: 1 },
-    headerNome: { color: '#FFFFFF', fontSize: 15, fontWeight: 'bold', letterSpacing: 0.5 },
-    headerDetalhe: { color: '#A0A0C0', fontSize: 11, marginTop: 2 },
-    // Badge
-    badge: { paddingHorizontal: 8, paddingVertical: 5, borderRadius: 6, marginLeft: 8, minWidth: 62, alignItems: 'center' },
-    badgeAberto: { backgroundColor: '#1B5E20', borderWidth: 1, borderColor: '#43A047' },
-    badgeFechado: { backgroundColor: '#7F0000', borderWidth: 1, borderColor: '#C62828' },
-    badgeTxt: { color: '#FFF', fontSize: 11, fontWeight: 'bold', letterSpacing: 0.5 },
-    // Botão horários
+    headerInfo: {
+        flex: 1,
+        paddingRight: 8,
+    },
+    headerEyebrow: {
+        color: COLORS.gold,
+        fontSize: 10,
+        fontWeight: '800',
+        letterSpacing: 1.1,
+        textTransform: 'uppercase',
+        marginBottom: 3,
+    },
+    headerNome: {
+        color: COLORS.surface,
+        fontSize: 17,
+        fontWeight: '900',
+        letterSpacing: 0.2,
+        marginBottom: 5,
+    },
+    headerMetaRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+        marginTop: 2,
+    },
+    headerDetalhe: {
+        color: '#D4C8BF',
+        fontSize: 11,
+        flex: 1,
+    },
+    badge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+        paddingHorizontal: 9,
+        paddingVertical: 7,
+        borderRadius: 999,
+        minWidth: 82,
+        justifyContent: 'center',
+        borderWidth: 1,
+    },
+    badgeAberto: {
+        backgroundColor: 'rgba(47,125,87,0.18)',
+        borderColor: 'rgba(88,176,127,0.45)',
+    },
+    badgeFechado: {
+        backgroundColor: 'rgba(184,50,50,0.18)',
+        borderColor: 'rgba(223,92,92,0.4)',
+    },
+    badgeDot: {
+        width: 7,
+        height: 7,
+        borderRadius: 4,
+    },
+    badgeDotAberto: { backgroundColor: '#57D08B' },
+    badgeDotFechado: { backgroundColor: '#FF7A7A' },
+    badgeTxt: {
+        color: COLORS.surface,
+        fontSize: 10,
+        fontWeight: '900',
+        letterSpacing: 0.7,
+    },
     btnHorarios: {
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-        gap: 6, paddingVertical: 7, backgroundColor: '#12122A',
-        borderTopWidth: 1, borderTopColor: '#2D2D44',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        paddingVertical: 11,
+        backgroundColor: '#120F19',
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(216,180,90,0.16)',
     },
-    btnHorariosTxt: { color: '#E8C547', fontSize: 12, fontWeight: '600' },
-    // Painel acordeão
-    painel: { backgroundColor: '#0D0D1F', paddingHorizontal: 16, paddingVertical: 8, borderTopWidth: 1, borderTopColor: '#2D2D44' },
-    linhaHorario: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 5, borderBottomWidth: 1, borderBottomColor: '#1E1E35' },
-    horarioDia: { color: '#C0C0E0', fontSize: 13, fontWeight: '500', width: 76 },
-    horarioHora: { color: '#E0E0FF', fontSize: 13 },
-    horarioFechado: { color: '#C62828', fontStyle: 'italic' },
-
-    // ── ProductCard ──────────────────────────────────────────────
-    card: {
-        flexDirection: 'row', backgroundColor: '#FFF', borderRadius: 12,
-        marginHorizontal: 12, marginVertical: 6,
-        elevation: 3, shadowColor: '#1A1A2E',
-        shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4,
-        overflow: 'hidden', borderLeftWidth: 3, borderLeftColor: '#B71C1C',
+    btnHorariosLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
     },
-    cardImg: { width: 105, height: 105 },
-    cardInfo: { flex: 1, padding: 10, justifyContent: 'space-between' },
-    cardNome: { fontSize: 14, fontWeight: 'bold', color: '#1A1A2E', letterSpacing: 0.2 },
-    cardDesc: { fontSize: 11, color: '#666', marginTop: 3, lineHeight: 16 },
-    cardRodape: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
-    cardPreco: { fontSize: 16, fontWeight: 'bold', color: '#B71C1C' },
-    btnAdicionar: { backgroundColor: '#1A1A2E', paddingHorizontal: 11, paddingVertical: 6, borderRadius: 8 },
-    btnAdicionarTxt: { color: '#E8C547', fontSize: 12, fontWeight: 'bold' },
-
-    // ── Footer ───────────────────────────────────────────────────
-    footer: {
-        flexDirection: 'row', backgroundColor: '#FFF',
-        borderTopWidth: 2, borderTopColor: '#1A1A2E',
-        paddingVertical: 8, elevation: 10,
-        shadowColor: '#000', shadowOffset: { width: 0, height: -2 },
-        shadowOpacity: 0.12, shadowRadius: 4,
+    btnHorariosTxt: {
+        color: COLORS.gold,
+        fontSize: 12,
+        fontWeight: '800',
     },
-    navItem: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 4 },
-    navLabel: { fontSize: 11, marginTop: 3, color: '#9E9E9E' },
-    navLabelOn: { color: '#B71C1C', fontWeight: '700' },
+    pressedDark: {
+        opacity: 0.78,
+        transform: [{ scale: 0.995 }],
+    },
+    painel: {
+        backgroundColor: '#120F19',
+        paddingHorizontal: 14,
+        paddingBottom: 12,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255,255,255,0.05)',
+    },
+    linhaHorario: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 8,
+        paddingHorizontal: 8,
+        borderRadius: 12,
+    },
+    linhaHorarioHoje: {
+        backgroundColor: 'rgba(216,180,90,0.12)',
+    },
+    horarioDiaGrupo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    horarioMarcador: {
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: 'rgba(255,255,255,0.16)',
+    },
+    horarioMarcadorHoje: {
+        backgroundColor: COLORS.gold,
+    },
+    horarioDia: {
+        color: '#CFC3BA',
+        fontSize: 13,
+        fontWeight: '700',
+    },
+    horarioDiaHoje: {
+        color: COLORS.surface,
+    },
+    horarioHora: {
+        color: '#E9DED5',
+        fontSize: 13,
+        fontWeight: '600',
+    },
+    horarioHoraHoje: {
+        color: COLORS.gold,
+        fontWeight: '900',
+    },
+    horarioFechado: {
+        color: '#F09696',
+        fontStyle: 'italic',
+    },
 
-    // ── HomeScreen ───────────────────────────────────────────────
+    // Home
+    listContent: {
+        backgroundColor: COLORS.bg,
+        paddingTop: 18,
+        paddingBottom: 8,
+    },
     listHeader: {
-        paddingHorizontal: 14, paddingTop: 14, paddingBottom: 6,
-        borderBottomWidth: 1, borderBottomColor: '#E0D8D0',
-        marginBottom: 6, marginHorizontal: 12,
+        paddingHorizontal: 18,
+        paddingBottom: 12,
     },
-    listTitulo: { fontSize: 20, fontWeight: 'bold', color: '#1A1A2E', letterSpacing: 0.3 },
-    listSub: { fontSize: 12, color: '#888', marginTop: 2, fontStyle: 'italic' },
+    sectionKicker: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 9,
+        marginBottom: 10,
+    },
+    kickerLine: {
+        width: 34,
+        height: 2,
+        backgroundColor: COLORS.gold,
+        borderRadius: 2,
+    },
+    kickerText: {
+        color: COLORS.red,
+        fontSize: 11,
+        fontWeight: '900',
+        letterSpacing: 1.1,
+        textTransform: 'uppercase',
+    },
+    menuTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: 12,
+    },
+    menuTitleGroup: {
+        flex: 1,
+    },
+    listTitulo: {
+        fontSize: 28,
+        fontWeight: '900',
+        color: COLORS.ink,
+        letterSpacing: 0.2,
+    },
+    listSub: {
+        fontSize: 13,
+        color: COLORS.muted,
+        marginTop: 4,
+        lineHeight: 18,
+    },
+    menuCountPill: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+        backgroundColor: COLORS.goldSoft,
+        borderWidth: 1,
+        borderColor: '#E9CF8D',
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        borderRadius: 999,
+        marginTop: 3,
+    },
+    menuCountTxt: {
+        color: COLORS.red,
+        fontSize: 11,
+        fontWeight: '900',
+    },
+    listFooterSpace: {
+        height: 18,
+    },
 
-    // ── OrdersScreen ────────────────────────────────────────────
-    placeholder: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8F5F0', padding: 24 },
-    placeholderTitulo: { fontSize: 22, fontWeight: 'bold', color: '#1A1A2E', marginTop: 18 },
-    placeholderSub: { fontSize: 14, color: '#9E9E9E', textAlign: 'center', marginTop: 8, lineHeight: 22 },
+    // ProductCard
+    card: {
+        flexDirection: 'row',
+        backgroundColor: COLORS.surface,
+        borderRadius: 18,
+        marginHorizontal: 14,
+        marginVertical: 7,
+        overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: 'rgba(233,220,201,0.9)',
+        ...SHADOWS.soft,
+    },
+    cardImageWrap: {
+        width: 116,
+        height: 130,
+        backgroundColor: COLORS.cream,
+        overflow: 'hidden',
+    },
+    cardImg: {
+        width: '100%',
+        height: '100%',
+    },
+    cardImageShade: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: 32,
+        backgroundColor: 'rgba(23,19,31,0.16)',
+    },
+    cardInfo: {
+        flex: 1,
+        padding: 13,
+        justifyContent: 'space-between',
+        minHeight: 130,
+    },
+    cardTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cardNome: {
+        flex: 1,
+        fontSize: 15,
+        fontWeight: '900',
+        color: COLORS.ink,
+        letterSpacing: 0.1,
+    },
+    cardDesc: {
+        fontSize: 12,
+        color: COLORS.muted,
+        marginTop: 5,
+        lineHeight: 17,
+    },
+    cardRodape: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        gap: 10,
+        marginTop: 12,
+    },
+    precoLabel: {
+        fontSize: 10,
+        color: COLORS.mutedLight,
+        fontWeight: '800',
+        textTransform: 'uppercase',
+        letterSpacing: 0.6,
+    },
+    cardPreco: {
+        fontSize: 19,
+        fontWeight: '900',
+        color: COLORS.red,
+        marginTop: 1,
+    },
+    btnAdicionar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
+        backgroundColor: COLORS.red,
+        paddingHorizontal: 11,
+        paddingVertical: 8,
+        borderRadius: 11,
+        borderWidth: 1,
+        borderColor: COLORS.redDark,
+    },
+    btnAdicionarPressed: {
+        opacity: 0.86,
+        transform: [{ scale: 0.97 }],
+    },
+    btnAdicionarTxt: {
+        color: COLORS.cream,
+        fontSize: 12,
+        fontWeight: '900',
+    },
 
-    // ── ProfileForm ──────────────────────────────────────────────
-    formContainer: { flex: 1, backgroundColor: '#F8F5F0' },
-    formConteudo: { padding: 16, paddingBottom: 36 },
-    formCabecalho: { marginBottom: 20, borderLeftWidth: 3, borderLeftColor: '#B71C1C', paddingLeft: 10 },
-    formTitulo: { fontSize: 22, fontWeight: 'bold', color: '#1A1A2E' },
-    formSub: { fontSize: 13, color: '#777', marginTop: 2 },
+    // Footer
+    footerOuter: {
+        backgroundColor: COLORS.bg,
+        paddingHorizontal: 12,
+        paddingTop: 7,
+        paddingBottom: Platform.OS === 'ios' ? 10 : 8,
+    },
+    footer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.surface,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: COLORS.line,
+        padding: 5,
+        ...SHADOWS.soft,
+    },
+    navItem: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 8,
+        borderRadius: 15,
+        gap: 2,
+    },
+    navItemOn: {
+        backgroundColor: COLORS.goldSoft,
+    },
+    navItemPressed: {
+        opacity: 0.82,
+        transform: [{ scale: 0.97 }],
+    },
+    navLabel: {
+        fontSize: 11,
+        color: COLORS.mutedLight,
+        fontWeight: '800',
+    },
+    navLabelOn: {
+        color: COLORS.red,
+        fontWeight: '900',
+    },
+
+    // Empty orders
+    emptyState: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: COLORS.bg,
+        paddingHorizontal: 28,
+    },
+    emptyIconBox: {
+        width: 96,
+        height: 96,
+        borderRadius: 48,
+        backgroundColor: COLORS.goldSoft,
+        borderWidth: 1,
+        borderColor: '#E9CF8D',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        ...SHADOWS.soft,
+    },
+    emptyKicker: {
+        color: COLORS.red,
+        fontSize: 11,
+        fontWeight: '900',
+        letterSpacing: 1.2,
+        textTransform: 'uppercase',
+        marginBottom: 8,
+    },
+    placeholderTitulo: {
+        fontSize: 23,
+        fontWeight: '900',
+        color: COLORS.ink,
+        textAlign: 'center',
+    },
+    placeholderSub: {
+        fontSize: 14,
+        color: COLORS.muted,
+        textAlign: 'center',
+        marginTop: 9,
+        lineHeight: 21,
+        maxWidth: 310,
+    },
+    emptyDivider: {
+        width: 52,
+        height: 2,
+        borderRadius: 2,
+        backgroundColor: COLORS.gold,
+        marginVertical: 18,
+    },
+    emptyHint: {
+        color: COLORS.mutedLight,
+        fontSize: 12,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+
+    // Profile form
+    formContainer: {
+        flex: 1,
+        backgroundColor: COLORS.bg,
+    },
+    formConteudo: {
+        padding: 16,
+        paddingBottom: 30,
+    },
+    formCabecalho: {
+        marginBottom: 16,
+        paddingHorizontal: 2,
+    },
+    formKicker: {
+        color: COLORS.red,
+        fontSize: 11,
+        fontWeight: '900',
+        textTransform: 'uppercase',
+        letterSpacing: 1.1,
+        marginBottom: 5,
+    },
+    formTitulo: {
+        fontSize: 27,
+        fontWeight: '900',
+        color: COLORS.ink,
+    },
+    formSub: {
+        fontSize: 13,
+        color: COLORS.muted,
+        marginTop: 5,
+        lineHeight: 19,
+    },
+    formSection: {
+        backgroundColor: COLORS.surface,
+        borderRadius: 18,
+        borderWidth: 1,
+        borderColor: COLORS.line,
+        padding: 14,
+        marginBottom: 14,
+        ...SHADOWS.soft,
+    },
+    formSectionHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        paddingBottom: 10,
+        marginBottom: 6,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.line,
+    },
     secao: {
-        fontSize: 12, fontWeight: 'bold', color: '#B71C1C',
-        textTransform: 'uppercase', letterSpacing: 1.2,
-        marginTop: 18, marginBottom: 10,
-        borderBottomWidth: 1, borderBottomColor: '#E0D8D0', paddingBottom: 5,
+        fontSize: 12,
+        fontWeight: '900',
+        color: COLORS.ink,
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
-    label: { fontSize: 13, color: '#444', fontWeight: '500', marginBottom: 5, marginTop: 4 },
+    label: {
+        fontSize: 13,
+        color: COLORS.ink,
+        fontWeight: '800',
+        marginBottom: 6,
+        marginTop: 8,
+    },
     input: {
-        backgroundColor: '#FFF', borderWidth: 1, borderColor: '#D0C8C0',
-        borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10,
-        fontSize: 14, color: '#1A1A2E', marginBottom: 10,
+        backgroundColor: '#FFFBF6',
+        borderWidth: 1,
+        borderColor: COLORS.line,
+        borderRadius: 12,
+        paddingHorizontal: 13,
+        paddingVertical: 11,
+        fontSize: 14,
+        color: COLORS.ink,
+        marginBottom: 4,
     },
-    formNota: { fontSize: 11, color: '#9E9E9E', marginTop: 18, textAlign: 'center', fontStyle: 'italic' },
+    inputFocus: {
+        borderColor: COLORS.gold,
+        backgroundColor: COLORS.surface,
+    },
+    formRow: {
+        flexDirection: 'row',
+        gap: 12,
+    },
+    numeroCol: {
+        flex: 0.38,
+    },
+    complementoCol: {
+        flex: 0.62,
+    },
+    formNota: {
+        fontSize: 11,
+        color: COLORS.mutedLight,
+        marginTop: 4,
+        textAlign: 'center',
+        fontStyle: 'italic',
+        fontWeight: '700',
+    },
 });
