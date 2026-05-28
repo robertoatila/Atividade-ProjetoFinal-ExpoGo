@@ -3,7 +3,7 @@
 **Aluno:** Roberto Atila Almeida Azevedo  
 **Turma:** Informática para Internet — ETEC Jacinto Ferreira de Sá  
 **Entrega:** 11 de junho  
-**Tema:** Sushi & Sashimi Bar (Grupo A)
+**Tema:** Sushi & Sashimi Bar (Grupo B)
 
 ---
 
