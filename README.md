@@ -25,12 +25,16 @@ Atividade-ProjetoFinal-ExpoGo/
     |-- icon.png
     |-- splash-icon.png
     |-- products/
-        |-- combinado-sashimi-20-pecas.png
-        |-- gunkan-salmao.png
-        |-- sashimi-atum.png
-        |-- sashimi-salmao.png
-        |-- temaki-salmao.png
-        |-- temaki-tuna-spicy.png
+        |-- combinado-sashimi-20-pecas.jpg
+        |-- combinado-sushi-30-pecas.jpg
+        |-- gunkan-salmao.jpg
+        |-- hot-roll-salmao.jpg
+        |-- nigiri-camarao.jpg
+        |-- sashimi-atum.jpg
+        |-- sashimi-salmao.jpg
+        |-- temaki-salmao.jpg
+        |-- temaki-tuna-spicy.jpg
+        |-- uramaki-california.jpg
 ```
 
 Arquivos e pastas removidos da estrutura antiga:
@@ -143,7 +147,7 @@ Cada item segue este formato:
     id: '1',
     nome: 'Sashimi de Salmão',
     preco: 28.90,
-    imagem: require('./assets/products/sashimi-salmao.png'),
+    imagem: require('./assets/products/sashimi-salmao.jpg'),
     descricao: '6 fatias de salmão fresco, shoyu e wasabi'
 }
 ```
