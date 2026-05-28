@@ -9,6 +9,9 @@ dist/
 web-build/
 expo-env.d.ts
 
+# Local image copies. The Snack version uses CDN URLs in App.js.
+assets/
+
 # Native
 .kotlin/
 *.orig.*

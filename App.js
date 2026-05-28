@@ -68,19 +68,32 @@ const HORARIOS = [
 
 // ─────────────────────────────────────────────────────────────
 // DADOS - Cardapio (10 itens obrigatorios)
-// Imagens podem ser locais via require(...) ou externas via URL.
+// Imagens hospedadas no CDN do Snack para evitar falha no import de assets.
 // ─────────────────────────────────────────────────────────────
+const IMAGENS_CARDAPIO = {
+    sashimiSalmao: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/b7c16d458b675f2716dd6131c2a79fad',
+    sashimiAtum: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/9c9515242bfaacb44cbd280f17be80b3',
+    combinadoSashimi: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/bcee104a4707f232533434de501fbc57',
+    temakiSalmao: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/6965aa267d145d5247133bcb4e3edaac',
+    uramakiCalifornia: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/dd21e7bb01f0edc7a3cbc7efdf9ab125',
+    nigiriCamarao: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/89a3522824bda4b5de92a5171c93641c',
+    hotRollSalmao: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/833f2f7a5d2bc04b115570c3e2c75a07',
+    combinadoSushi: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/1cf0fd17c7856717b8119f16662f554e',
+    gunkanSalmao: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/497fe2d32b9b65e6e04167478cfea412',
+    temakiTuna: 'https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/c10ae132c459345266d58d4c836f8e6c',
+};
+
 const CARDAPIO = [
-    { id: '1', nome: 'Sashimi de Salmão', preco: 28.90, imagem: require('./assets/products/sashimi-salmao.jpg'), descricao: '6 fatias de salmão fresco, shoyu e wasabi' },
-    { id: '2', nome: 'Sashimi de Atum', preco: 32.90, imagem: require('./assets/products/sashimi-atum.jpg'), descricao: '6 fatias de atum premium com gengibre em conserva' },
-    { id: '3', nome: 'Combinado Sashimi 20 peças', preco: 65.90, imagem: require('./assets/products/combinado-sashimi-20-pecas.jpg'), descricao: 'Mix de salmão, atum, peixe branco e camarão' },
-    { id: '4', nome: 'Temaki Salmão Cream Cheese', preco: 22.90, imagem: require('./assets/products/temaki-salmao.jpg'), descricao: 'Cone de alga com salmão, cream cheese e pepino' },
-    { id: '5', nome: 'Uramaki Califórnia (8 un.)', preco: 24.90, imagem: require('./assets/products/uramaki-california.jpg'), descricao: 'Arroz por fora, kani, pepino e manga' },
-    { id: '6', nome: 'Nigiri de Camarão (4 un.)', preco: 19.90, imagem: require('./assets/products/nigiri-camarao.jpg'), descricao: 'Camarão grelhado sobre bolinha de arroz temperado' },
-    { id: '7', nome: 'Hot Roll de Salmão (8 un.)', preco: 26.90, imagem: require('./assets/products/hot-roll-salmao.jpg'), descricao: 'Rolinho frito com salmão e cream cheese' },
-    { id: '8', nome: 'Combinado Sushi 30 peças', preco: 89.90, imagem: require('./assets/products/combinado-sushi-30-pecas.jpg'), descricao: 'Hossomaki, uramaki, niguiri e temaki mini' },
-    { id: '9', nome: 'Gunkan de Salmão (4 un.)', preco: 21.90, imagem: require('./assets/products/gunkan-salmao.jpg'), descricao: 'Gunkan com roe de salmão e cebolinha verde' },
-    { id: '10', nome: 'Temaki Tuna Spicy', preco: 23.90, imagem: require('./assets/products/temaki-tuna-spicy.jpg'), descricao: 'Atum picante, sriracha e pepino crocante' },
+    { id: '1', nome: 'Sashimi de Salmão', preco: 28.90, imagem: IMAGENS_CARDAPIO.sashimiSalmao, descricao: '6 fatias de salmão fresco, shoyu e wasabi' },
+    { id: '2', nome: 'Sashimi de Atum', preco: 32.90, imagem: IMAGENS_CARDAPIO.sashimiAtum, descricao: '6 fatias de atum premium com gengibre em conserva' },
+    { id: '3', nome: 'Combinado Sashimi 20 peças', preco: 65.90, imagem: IMAGENS_CARDAPIO.combinadoSashimi, descricao: 'Mix de salmão, atum, peixe branco e camarão' },
+    { id: '4', nome: 'Temaki Salmão Cream Cheese', preco: 22.90, imagem: IMAGENS_CARDAPIO.temakiSalmao, descricao: 'Cone de alga com salmão, cream cheese e pepino' },
+    { id: '5', nome: 'Uramaki Califórnia (8 un.)', preco: 24.90, imagem: IMAGENS_CARDAPIO.uramakiCalifornia, descricao: 'Arroz por fora, kani, pepino e manga' },
+    { id: '6', nome: 'Nigiri de Camarão (4 un.)', preco: 19.90, imagem: IMAGENS_CARDAPIO.nigiriCamarao, descricao: 'Camarão grelhado sobre bolinha de arroz temperado' },
+    { id: '7', nome: 'Hot Roll de Salmão (8 un.)', preco: 26.90, imagem: IMAGENS_CARDAPIO.hotRollSalmao, descricao: 'Rolinho frito com salmão e cream cheese' },
+    { id: '8', nome: 'Combinado Sushi 30 peças', preco: 89.90, imagem: IMAGENS_CARDAPIO.combinadoSushi, descricao: 'Hossomaki, uramaki, niguiri e temaki mini' },
+    { id: '9', nome: 'Gunkan de Salmão (4 un.)', preco: 21.90, imagem: IMAGENS_CARDAPIO.gunkanSalmao, descricao: 'Gunkan com roe de salmão e cebolinha verde' },
+    { id: '10', nome: 'Temaki Tuna Spicy', preco: 23.90, imagem: IMAGENS_CARDAPIO.temakiTuna, descricao: 'Atum picante, sriracha e pepino crocante' },
 ];
 
 // ─────────────────────────────────────────────────────────────

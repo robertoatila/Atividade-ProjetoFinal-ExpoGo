@@ -19,23 +19,9 @@ Atividade-ProjetoFinal-ExpoGo/
 |-- package.json
 |-- README.md
 |-- .gitignore
-|-- assets/
-    |-- adaptive-icon.png
-    |-- favicon.png
-    |-- icon.png
-    |-- splash-icon.png
-    |-- products/
-        |-- combinado-sashimi-20-pecas.jpg
-        |-- combinado-sushi-30-pecas.jpg
-        |-- gunkan-salmao.jpg
-        |-- hot-roll-salmao.jpg
-        |-- nigiri-camarao.jpg
-        |-- sashimi-atum.jpg
-        |-- sashimi-salmao.jpg
-        |-- temaki-salmao.jpg
-        |-- temaki-tuna-spicy.jpg
-        |-- uramaki-california.jpg
 ```
+
+Observacao: as imagens locais podem ficar na pasta `assets/` da maquina, mas essa pasta e ignorada pelo Git. No app, as fotos do cardapio carregam por URLs do CDN do Snack para evitar erro de importacao de assets.
 
 Arquivos e pastas removidos da estrutura antiga:
 
@@ -44,7 +30,7 @@ Arquivos e pastas removidos da estrutura antiga:
 - `components/AssetExample.js`: componente de exemplo do template Snack.
 - `assets/snack-icon.png`: imagem padrão do Snack sem uso no `app.json`.
 - `screens/`: pasta usada incorretamente para guardar imagem.
-- Imagens do cardápio: organizadas em `assets/products/` e otimizadas para importação no Expo Snack.
+- Imagens do cardápio: hospedadas por URL para funcionar melhor no Expo Snack.
 
 ## Funcionalidades
 
@@ -97,11 +83,10 @@ Comandos disponíveis:
 ## Como Rodar no Expo Snack
 
 1. Acesse [https://snack.expo.dev](https://snack.expo.dev).
-2. Crie um novo Snack.
-3. Copie o conteúdo de `App.js`.
-4. Cole no arquivo `App.js` do Snack.
-5. Confirme que `@expo/vector-icons` está disponível.
-6. Rode o projeto e escaneie o QR Code com o Expo Go.
+2. Use a opcao `Import git repository`.
+3. Informe a URL `https://github.com/robertoatila/Atividade-ProjetoFinal-ExpoGo`.
+4. Deixe `Folder path` vazio e use a branch `main`.
+5. Rode o projeto e escaneie o QR Code com o Expo Go.
 
 ## Organização do Código
 
@@ -147,14 +132,14 @@ Cada item segue este formato:
     id: '1',
     nome: 'Sashimi de Salmão',
     preco: 28.90,
-    imagem: require('./assets/products/sashimi-salmao.jpg'),
+    imagem: IMAGENS_CARDAPIO.sashimiSalmao,
     descricao: '6 fatias de salmão fresco, shoyu e wasabi'
 }
 ```
 
-O cardápio usa 10 imagens locais em `assets/products/`, uma para cada item.
+O cardápio usa 10 imagens hospedadas no CDN do Snack, uma para cada item.
 
-Evite imagens muito grandes no repositório, porque o Snack pode falhar ao importar assets pesados. As imagens atuais foram reduzidas para uso mobile.
+Isso evita a falha `Failed to upload file asset` durante a importacao do repositorio no Snack. As copias locais podem ser mantidas em `assets/products/`, mas nao precisam ser versionadas.
 
 ## Checklist
 
