@@ -1,15 +1,38 @@
 # Sushi & Sashimi Bar - Projeto Final Expo Go
 
-Aplicativo mobile em React Native com Expo para um sistema de pedidos de restaurante japonês. A interface possui header fixo, acordeão de horários, indicador automático de aberto/fechado, cardápio com 10 itens, navegação inferior e formulário de perfil.
+Aplicativo mobile desenvolvido em React Native com Expo para simular um sistema de pedidos de um restaurante japonês. O projeto foi pensado para apresentação final da ETEC Jacinto Ferreira de Sá, com foco em layout, navegação simples, cardápio visual e experiência compatível com Expo Go e Expo Snack.
 
-**Aluno:** Roberto Atila Almeida Azevedo  
-**Turma:** Informática para Internet - ETEC Jacinto Ferreira de Sá  
-**Entrega:** 11 de junho  
-**Tema:** Sushi & Sashimi Bar - Grupo B
+- **Aluno:** Roberto Atila Almeida Azevedo
+- **Curso:** Informática para Internet
+- **Instituição:** ETEC Jacinto Ferreira de Sá
+- **Entrega:** 11 de junho
+- **Tema:** Sushi & Sashimi Bar
+
+## Destaques
+
+- Interface com identidade visual premium japonesa.
+- Header fixo com nome do restaurante, endereço, telefone e status `ABERTO` ou `FECHADO`.
+- Acordeão de horários de funcionamento com destaque para o dia atual.
+- Cardápio com 10 produtos renderizados com `FlatList`.
+- Componente `ProductCard` reutilizável.
+- Navegação inferior fixa entre `Home`, `Pedidos` e `Perfil`.
+- Tela de pedidos com estado vazio.
+- Formulário de perfil com dados pessoais e endereço de entrega.
+- Imagens do cardápio carregadas por URL para evitar erro de importação no Expo Snack.
+
+## Tecnologias
+
+| Tecnologia | Uso no projeto |
+| --- | --- |
+| React | Componentização e estado com `useState` |
+| React Native | Construção da interface mobile |
+| Expo | Execução no Expo Go, Android, iOS e Web |
+| `@expo/vector-icons` | Ícones da interface com `Ionicons` |
+| JavaScript | Linguagem principal do app |
 
 ## Estrutura do Projeto
 
-O projeto Expo agora fica direto na raiz do repositório:
+O projeto Expo fica direto na raiz do repositório para facilitar a importação no Snack.
 
 ```text
 Atividade-ProjetoFinal-ExpoGo/
@@ -21,111 +44,107 @@ Atividade-ProjetoFinal-ExpoGo/
 |-- .gitignore
 ```
 
-Observacao: as imagens locais podem ficar na pasta `assets/` da maquina, mas essa pasta e ignorada pelo Git. No app, as fotos do cardapio carregam por URLs do CDN do Snack para evitar erro de importacao de assets.
+Observação: a pasta `assets/` pode existir na máquina local com cópias das imagens, mas ela é ignorada pelo Git. No código final, as imagens do cardápio são carregadas por URLs do CDN do Snack dentro de `IMAGENS_CARDAPIO`.
 
-Arquivos e pastas removidos da estrutura antiga:
+## Como Rodar Localmente
 
-- `projetofinal/`: pasta aninhada duplicada.
-- `app.js`: cópia duplicada do app. O arquivo principal agora é `App.js`.
-- `components/AssetExample.js`: componente de exemplo do template Snack.
-- `assets/snack-icon.png`: imagem padrão do Snack sem uso no `app.json`.
-- `screens/`: pasta usada incorretamente para guardar imagem.
-- Imagens do cardápio: hospedadas por URL para funcionar melhor no Expo Snack.
+### Pré-requisitos
 
-## Funcionalidades
+- Node.js instalado.
+- npm instalado.
+- Aplicativo Expo Go no celular, se for testar em dispositivo físico.
 
-- Header fixo com nome, endereço, telefone e identidade visual premium.
-- Painel acordeão com os horários de funcionamento.
-- Indicador automático `ABERTO`/`FECHADO`.
-- Destaque do dia atual no painel de horários.
-- Cardápio com 10 itens renderizados via `FlatList`.
-- Componente `ProductCard` reutilizável.
-- Footer fixo com navegação entre `Home`, `Pedidos` e `Perfil`.
-- Tela de pedidos em estado inicial.
-- Formulário de perfil com dados pessoais e endereço.
-- Feedback visual em botões usando `Pressable`.
-
-## Tecnologias
-
-| Tecnologia | Uso |
-| --- | --- |
-| React | Componentes e estado com `useState` |
-| React Native | Interface mobile |
-| Expo | Execução com Expo Go |
-| `@expo/vector-icons` | Ícones da interface |
-| JavaScript | Linguagem principal |
-
-## Como Rodar
-
-Instale as dependências:
+### Instalação
 
 ```bash
 npm install
 ```
 
-Inicie o Expo:
+### Iniciar o projeto
 
 ```bash
 npm start
 ```
 
-Depois, escaneie o QR Code com o aplicativo Expo Go.
+Depois de iniciar, escolha uma das opções do Expo:
 
-Comandos disponíveis:
+- Escanear o QR Code com o Expo Go.
+- Pressionar `a` para abrir no Android.
+- Pressionar `i` para abrir no iOS, se estiver em ambiente compatível.
+- Pressionar `w` para abrir no navegador.
+
+## Como Importar no Expo Snack
+
+1. Acesse [https://snack.expo.dev](https://snack.expo.dev).
+2. Clique em `Import git repository`.
+3. Use esta URL:
+
+```text
+https://github.com/robertoatila/Atividade-ProjetoFinal-ExpoGo
+```
+
+4. Deixe `Folder path` vazio.
+5. Use a branch `main`.
+6. Aguarde o Snack carregar o projeto.
+
+O repositório foi ajustado para evitar o erro `Failed to upload file asset`. Por isso, as imagens do cardápio não são importadas como arquivos locais; elas são carregadas por URLs externas.
+
+## Scripts Disponíveis
 
 | Comando | Descrição |
 | --- | --- |
-| `npm start` | Inicia o servidor Expo |
-| `npm run android` | Abre no Android |
-| `npm run ios` | Abre no iOS |
-| `npm run web` | Abre no navegador |
-
-## Como Rodar no Expo Snack
-
-1. Acesse [https://snack.expo.dev](https://snack.expo.dev).
-2. Use a opcao `Import git repository`.
-3. Informe a URL `https://github.com/robertoatila/Atividade-ProjetoFinal-ExpoGo`.
-4. Deixe `Folder path` vazio e use a branch `main`.
-5. Rode o projeto e escaneie o QR Code com o Expo Go.
+| `npm start` | Inicia o servidor de desenvolvimento do Expo |
+| `npm run android` | Inicia o projeto no Android |
+| `npm run ios` | Inicia o projeto no iOS |
+| `npm run web` | Inicia o projeto no navegador |
 
 ## Organização do Código
 
-O app está concentrado em `App.js` para facilitar a entrega no Expo Snack.
+O app está concentrado em `App.js` para facilitar a entrega, a correção e o uso no Expo Snack.
 
 | Bloco | Responsabilidade |
 | --- | --- |
-| `COLORS` | Paleta visual |
+| `COLORS` | Paleta visual do app |
 | `SHADOWS` | Sombras reutilizáveis |
 | `HORARIOS` | Dias e horários de funcionamento |
-| `CARDAPIO` | Produtos do cardápio |
-| `verificarAberto()` | Cálculo de aberto/fechado |
-| `Header` | Header, badge e acordeão |
-| `ProductCard` | Card reutilizável do produto |
-| `FooterNav` | Navegação inferior |
-| `MenuHeader` | Cabeçalho da lista |
-| `HomeScreen` | Tela do cardápio |
+| `IMAGENS_CARDAPIO` | URLs das imagens dos produtos |
+| `CARDAPIO` | Lista com os 10 itens do cardápio |
+| `verificarAberto()` | Calcula se o restaurante está aberto |
+| `formatarPreco()` | Formata valores em reais |
+| `Header` | Header fixo, status e acordeão de horários |
+| `ProductCard` | Card reutilizável para cada produto |
+| `FooterNav` | Navegação inferior fixa |
+| `MenuHeader` | Cabeçalho da seção de cardápio |
+| `HomeScreen` | Tela principal com lista de produtos |
 | `OrdersScreen` | Tela de pedidos |
-| `ProfileForm` | Formulário de perfil |
-| `App` | Componente raiz |
+| `ProfileForm` | Formulário de perfil e entrega |
+| `App` | Componente raiz e controle de navegação |
 
-## Dados Editáveis
+## Funcionalidades Implementadas
 
-### Horários
+### Header
 
-Edite o array `HORARIOS`:
+O header permanece fixo no topo da interface e reúne as principais informações do restaurante:
 
-```javascript
-const HORARIOS = [
-    { dia: 'Domingo', abertura: '12:00', fechamento: '22:00' },
-    { dia: 'Segunda', abertura: null, fechamento: null },
-];
-```
+- Nome do restaurante.
+- Endereço.
+- Telefone.
+- Indicador de aberto ou fechado.
+- Botão de acordeão para horários.
 
-Use `null` em `abertura` e `fechamento` para indicar que o restaurante não abre naquele dia.
+O status `ABERTO` ou `FECHADO` é calculado automaticamente com base no horário do dispositivo.
 
 ### Cardápio
 
-Cada item segue este formato:
+O cardápio possui 10 itens e é renderizado com `FlatList`, mantendo a estrutura pedida no projeto. Cada produto contém:
+
+- `id`
+- `nome`
+- `preco`
+- `imagem`
+- `descricao`
+
+Exemplo:
 
 ```javascript
 {
@@ -137,15 +156,52 @@ Cada item segue este formato:
 }
 ```
 
-O cardápio usa 10 imagens hospedadas no CDN do Snack, uma para cada item.
+### Navegação
 
-Isso evita a falha `Failed to upload file asset` durante a importacao do repositorio no Snack. As copias locais podem ser mantidas em `assets/products/`, mas nao precisam ser versionadas.
+A navegação é feita por um footer fixo com três telas:
 
-## Checklist
+- `Home`: cardápio.
+- `Pedidos`: tela de acompanhamento inicial.
+- `Perfil`: formulário do cliente.
+
+### Perfil
+
+O formulário de perfil possui campos para:
+
+- Nome.
+- Telefone.
+- E-mail.
+- Rua.
+- Número.
+- Complemento.
+- Observação de entrega.
+
+Os dados digitados não são persistidos, pois esta versão é visual e focada na entrega do layout.
+
+## Dados Editáveis
+
+### Alterar horários
+
+Edite o array `HORARIOS` em `App.js`:
+
+```javascript
+const HORARIOS = [
+    { dia: 'Domingo', abertura: '12:00', fechamento: '22:00' },
+    { dia: 'Segunda', abertura: null, fechamento: null },
+];
+```
+
+Use `null` em `abertura` e `fechamento` quando o restaurante não abrir naquele dia.
+
+### Alterar produtos
+
+Edite o array `CARDAPIO` em `App.js`. Para adicionar uma nova imagem, adicione primeiro a URL em `IMAGENS_CARDAPIO` e depois use essa chave no produto.
+
+## Checklist do Projeto
 
 | Requisito | Status |
 | --- | --- |
-| Projeto Expo na raiz | Concluído |
+| Projeto Expo na raiz do repositório | Concluído |
 | Header fixo | Concluído |
 | Acordeão de horários | Concluído |
 | Indicador aberto/fechado | Concluído |
@@ -153,14 +209,16 @@ Isso evita a falha `Failed to upload file asset` durante a importacao do reposit
 | Lista com `FlatList` | Concluído |
 | `ProductCard` reutilizável | Concluído |
 | Footer fixo | Concluído |
-| Tela de pedidos | Estrutura inicial |
 | Formulário de perfil | Concluído |
-| Carrinho funcional | Fora desta versão |
-| Persistência de dados | Fora desta versão |
+| Imagens no cardápio | Concluído |
+| Carrinho real | Fora do escopo |
+| Persistência de dados | Fora do escopo |
 
 ## Solução de Problemas
 
 ### O Expo não inicia
+
+Remova as dependências e instale novamente:
 
 ```bash
 rm -rf node_modules
@@ -176,16 +234,35 @@ npm install
 npm start
 ```
 
-### Erro com ícones
+### Erro com `@expo/vector-icons`
+
+Instale a dependência pelo Expo:
 
 ```bash
 npx expo install @expo/vector-icons
 ```
 
-### As imagens dos produtos não aparecem
+### O Snack mostra erro de cache
 
-O cardápio usa URLs externas. Confira se o dispositivo está conectado à internet.
+Se o Snack continuar mostrando uma versão antiga:
+
+1. Reimporte o repositório.
+2. Use a branch `main`.
+3. Deixe `Folder path` vazio.
+4. Tente abrir em uma aba anônima.
+
+### As imagens do cardápio não aparecem
+
+As imagens usam URLs externas. Verifique se o dispositivo, emulador ou navegador está conectado à internet.
 
 ### O status aberto/fechado parece incorreto
 
-O cálculo usa a data e hora do dispositivo. Confira o relógio e o fuso horário do celular ou emulador.
+O cálculo usa a data, hora e fuso horário do dispositivo. Confira o relógio do celular, emulador ou navegador.
+
+## Observações da Entrega
+
+Este projeto é uma versão visual e acadêmica. O foco está na estrutura de telas, layout, navegação e organização do cardápio. Funcionalidades como carrinho real, pagamento, banco de dados, login e persistência de perfil podem ser adicionadas em uma versão futura.
+
+## Licença
+
+Projeto acadêmico desenvolvido para fins educacionais.
