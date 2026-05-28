@@ -148,7 +148,7 @@ Cada item segue este formato:
 }
 ```
 
-O cardápio usa imagens locais quando elas existem em `assets/products/`. Os itens sem imagem local continuam usando URLs externas como fallback.
+O cardápio usa 10 imagens locais em `assets/products/`, uma para cada item.
 
 Evite imagens muito grandes no repositório, porque o Snack pode falhar ao importar assets pesados. As imagens atuais foram reduzidas para uso mobile.
 
