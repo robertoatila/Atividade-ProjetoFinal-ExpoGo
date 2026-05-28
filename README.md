@@ -1,153 +1,139 @@
-# projetofinal - Sushi & Sashimi Bar
+# Sushi & Sashimi Bar - Projeto Final Expo Go
 
-Aplicativo mobile desenvolvido em React Native para Expo Go como projeto final do curso de Informática para Internet. O app simula a interface de um restaurante de sushi, com cardápio, horário de funcionamento, navegação inferior, tela de pedidos e formulário de perfil para dados de entrega.
+Aplicativo mobile em React Native com Expo para um sistema de pedidos de restaurante japonês. A interface possui header fixo, acordeão de horários, indicador automático de aberto/fechado, cardápio com 10 itens, navegação inferior e formulário de perfil.
 
 **Aluno:** Roberto Atila Almeida Azevedo  
 **Turma:** Informática para Internet - ETEC Jacinto Ferreira de Sá  
 **Entrega:** 11 de junho  
 **Tema:** Sushi & Sashimi Bar - Grupo B
 
-## Sumário
+## Estrutura do Projeto
 
-- [Funcionalidades](#funcionalidades)
-- [Tecnologias utilizadas](#tecnologias-utilizadas)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Como rodar no Expo Snack](#como-rodar-no-expo-snack)
-- [Como rodar localmente](#como-rodar-localmente)
-- [Organização do código](#organização-do-código)
-- [Dados principais do app](#dados-principais-do-app)
-- [Checklist da entrega](#checklist-da-entrega)
-- [Próximos passos](#próximos-passos)
-- [Solução de problemas](#solução-de-problemas)
-
-## Funcionalidades
-
-- Header fixo com nome do restaurante, endereço, telefone e indicador de funcionamento.
-- Painel expansível com os horários de funcionamento de cada dia da semana.
-- Cálculo automático de status `ABERTO` ou `FECHADO` de acordo com o dia e horário atual.
-- Cardápio com 10 produtos, imagens, descrições e preços.
-- Lista de produtos renderizada com `FlatList`.
-- Componente reutilizável para exibição dos itens do cardápio.
-- Botão visual de adicionar item ao carrinho.
-- Navegação inferior fixa com as opções `Home`, `Pedidos` e `Perfil`.
-- Tela de pedidos em estado inicial, preparada para implementação futura.
-- Formulário de perfil com campos de dados pessoais e endereço de entrega.
-- Layout adaptado para uso no Expo Go em dispositivos móveis.
-
-## Tecnologias utilizadas
-
-| Tecnologia | Uso no projeto |
-| --- | --- |
-| React | Criação dos componentes e gerenciamento de estado com `useState` |
-| React Native | Interface mobile com `View`, `Text`, `Image`, `FlatList`, `ScrollView` e `TextInput` |
-| Expo Go | Execução e visualização do app no celular |
-| Expo Snack | Ambiente online recomendado para testar a entrega |
-| `@expo/vector-icons` | Ícones da navegação, horários e tela de pedidos |
-
-## Estrutura do projeto
-
-Estrutura principal deste repositório:
+O projeto Expo agora fica direto na raiz do repositório:
 
 ```text
 Atividade-ProjetoFinal-ExpoGo/
-|-- app.js
-|-- README.md
-```
-
-O projeto está concentrado em um único arquivo para facilitar a entrega no Expo Snack. Ao criar o projeto no Snack, copie o conteúdo de `app.js` para o arquivo `App.js`.
-
-Estrutura esperada no Expo Snack:
-
-```text
-projetofinal/
 |-- App.js
+|-- app.json
+|-- index.js
+|-- package.json
+|-- README.md
+|-- .gitignore
+|-- assets/
+    |-- adaptive-icon.png
+    |-- favicon.png
+    |-- icon.png
+    |-- splash-icon.png
+    |-- products/
+        |-- combinado-sashimi-20-pecas.png
+        |-- sashimi-atum.png
+        |-- sashimi-salmao.png
 ```
 
-No estado atual, o app usa imagens externas de placeholder por URL. Por isso, não é obrigatório criar uma pasta `assets/` para executar a versão atual.
+Arquivos e pastas removidos da estrutura antiga:
 
-## Como rodar no Expo Snack
+- `projetofinal/`: pasta aninhada duplicada.
+- `app.js`: cópia duplicada do app. O arquivo principal agora é `App.js`.
+- `components/AssetExample.js`: componente de exemplo do template Snack.
+- `assets/snack-icon.png`: imagem padrão do Snack sem uso no `app.json`.
+- `screens/`: pasta usada incorretamente para guardar imagem.
+- Imagens soltas na raiz: movidas para `assets/products/`.
+
+## Funcionalidades
+
+- Header fixo com nome, endereço, telefone e identidade visual premium.
+- Painel acordeão com os horários de funcionamento.
+- Indicador automático `ABERTO`/`FECHADO`.
+- Destaque do dia atual no painel de horários.
+- Cardápio com 10 itens renderizados via `FlatList`.
+- Componente `ProductCard` reutilizável.
+- Footer fixo com navegação entre `Home`, `Pedidos` e `Perfil`.
+- Tela de pedidos em estado inicial.
+- Formulário de perfil com dados pessoais e endereço.
+- Feedback visual em botões usando `Pressable`.
+
+## Tecnologias
+
+| Tecnologia | Uso |
+| --- | --- |
+| React | Componentes e estado com `useState` |
+| React Native | Interface mobile |
+| Expo | Execução com Expo Go |
+| `@expo/vector-icons` | Ícones da interface |
+| JavaScript | Linguagem principal |
+
+## Como Rodar
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Inicie o Expo:
+
+```bash
+npm start
+```
+
+Depois, escaneie o QR Code com o aplicativo Expo Go.
+
+Comandos disponíveis:
+
+| Comando | Descrição |
+| --- | --- |
+| `npm start` | Inicia o servidor Expo |
+| `npm run android` | Abre no Android |
+| `npm run ios` | Abre no iOS |
+| `npm run web` | Abre no navegador |
+
+## Como Rodar no Expo Snack
 
 1. Acesse [https://snack.expo.dev](https://snack.expo.dev).
 2. Crie um novo Snack.
-3. Renomeie o projeto para `projetofinal`, se desejar manter o mesmo nome da entrega.
-4. Abra o arquivo `App.js` criado pelo Snack.
-5. Copie todo o conteúdo de `app.js` deste repositório.
-6. Cole o conteúdo dentro do `App.js` do Snack.
-7. Confira se a dependência `@expo/vector-icons` está disponível. Normalmente ela já vem configurada no ambiente Expo.
-8. Clique em `Run` ou escaneie o QR Code com o aplicativo Expo Go no celular.
+3. Copie o conteúdo de `App.js`.
+4. Cole no arquivo `App.js` do Snack.
+5. Confirme que `@expo/vector-icons` está disponível.
+6. Rode o projeto e escaneie o QR Code com o Expo Go.
 
-## Como rodar localmente
+## Organização do Código
 
-Este repositório não possui `package.json`, então o caminho principal recomendado é o Expo Snack. Caso queira executar localmente, crie um projeto Expo e copie o arquivo:
-
-```bash
-npx create-expo-app projetofinal
-cd projetofinal
-```
-
-Depois, substitua o conteúdo de `App.js` pelo conteúdo de `app.js` deste repositório.
-
-Instale a dependência de ícones, se necessário:
-
-```bash
-npx expo install @expo/vector-icons
-```
-
-Inicie o projeto:
-
-```bash
-npx expo start
-```
-
-Em seguida, abra no Expo Go usando o QR Code exibido no terminal.
-
-## Organização do código
-
-O arquivo `app.js` está dividido em blocos lógicos:
+O app está concentrado em `App.js` para facilitar a entrega no Expo Snack.
 
 | Bloco | Responsabilidade |
 | --- | --- |
-| `HORARIOS` | Lista os dias da semana e os horários de abertura e fechamento |
-| `CARDAPIO` | Define os 10 produtos exibidos na tela inicial |
-| `verificarAberto()` | Calcula se o restaurante está aberto no momento atual |
-| `Header` | Mostra informações do restaurante, status e painel de horários |
-| `ProductCard` | Renderiza cada item do cardápio |
-| `FooterNav` | Controla a navegação inferior entre as telas |
-| `HomeScreen` | Exibe o cardápio usando `FlatList` |
-| `OrdersScreen` | Mostra a tela inicial de pedidos |
-| `ProfileForm` | Exibe o formulário de perfil e endereço |
-| `App` | Componente raiz que controla qual tela está ativa |
-| `StyleSheet` | Centraliza os estilos visuais da aplicação |
+| `COLORS` | Paleta visual |
+| `SHADOWS` | Sombras reutilizáveis |
+| `HORARIOS` | Dias e horários de funcionamento |
+| `CARDAPIO` | Produtos do cardápio |
+| `verificarAberto()` | Cálculo de aberto/fechado |
+| `Header` | Header, badge e acordeão |
+| `ProductCard` | Card reutilizável do produto |
+| `FooterNav` | Navegação inferior |
+| `MenuHeader` | Cabeçalho da lista |
+| `HomeScreen` | Tela do cardápio |
+| `OrdersScreen` | Tela de pedidos |
+| `ProfileForm` | Formulário de perfil |
+| `App` | Componente raiz |
 
-## Dados principais do app
+## Dados Editáveis
 
-### Horários de funcionamento
+### Horários
 
-Os horários são configurados no array `HORARIOS`:
+Edite o array `HORARIOS`:
 
 ```javascript
 const HORARIOS = [
     { dia: 'Domingo', abertura: '12:00', fechamento: '22:00' },
     { dia: 'Segunda', abertura: null, fechamento: null },
-    { dia: 'Terça', abertura: '18:00', fechamento: '23:00' },
 ];
 ```
 
-Quando `abertura` e `fechamento` estão como `null`, o app considera o restaurante fechado naquele dia.
+Use `null` em `abertura` e `fechamento` para indicar que o restaurante não abre naquele dia.
 
 ### Cardápio
 
-Os itens do cardápio ficam no array `CARDAPIO`. Cada produto possui:
-
-| Campo | Descrição |
-| --- | --- |
-| `id` | Identificador único usado pela lista |
-| `nome` | Nome do prato |
-| `preco` | Valor exibido no card |
-| `imagem` | URL da imagem do produto |
-| `descricao` | Descrição curta do item |
-
-Exemplo:
+Cada item segue este formato:
 
 ```javascript
 {
@@ -159,67 +145,53 @@ Exemplo:
 }
 ```
 
-Para usar imagens próprias, crie uma pasta `assets/` no projeto Expo e troque a URL por um `require`:
+Há imagens locais organizadas em `assets/products/`, caso queira substituir os placeholders dos produtos depois.
 
-```javascript
-imagem: require('./assets/produto1.jpg')
-```
-
-Nesse caso, ajuste o componente `Image` para receber a imagem diretamente:
-
-```javascript
-<Image source={produto.imagem} style={s.cardImg} resizeMode="cover" />
-```
-
-## Checklist da entrega
+## Checklist
 
 | Requisito | Status |
 | --- | --- |
-| Header fixo com logo, nome, endereço e telefone | Concluído |
-| Painel acordeão com horários de funcionamento | Concluído |
-| Indicador automático de aberto ou fechado | Concluído |
+| Projeto Expo na raiz | Concluído |
+| Header fixo | Concluído |
+| Acordeão de horários | Concluído |
+| Indicador aberto/fechado | Concluído |
 | Cardápio com 10 itens | Concluído |
-| Cards de produto reutilizáveis | Concluído |
-| Botão de adicionar ao carrinho | Layout concluído |
-| Navegação inferior com 3 opções | Concluído |
-| Tela de pedidos | Estrutura inicial concluída |
+| Lista com `FlatList` | Concluído |
+| `ProductCard` reutilizável | Concluído |
+| Footer fixo | Concluído |
+| Tela de pedidos | Estrutura inicial |
 | Formulário de perfil | Concluído |
-| Persistência de dados | Não implementada nesta versão |
-| Carrinho funcional | Não implementado nesta versão |
+| Carrinho funcional | Fora desta versão |
+| Persistência de dados | Fora desta versão |
 
-## Próximos passos
+## Solução de Problemas
 
-- Implementar carrinho de compras com quantidade, subtotal e total.
-- Salvar os dados do perfil usando `AsyncStorage`.
-- Criar uma tela de confirmação de pedido.
-- Substituir imagens de placeholder por imagens reais dos produtos.
-- Separar o arquivo único em pastas como `components/`, `screens/` e `data/` caso o projeto cresça.
-- Adicionar validações no formulário de perfil.
+### O Expo não inicia
 
-## Solução de problemas
-
-### O Snack mostra erro em `@expo/vector-icons`
-
-Confirme se a importação está igual à usada no código:
-
-```javascript
-import { Ionicons } from '@expo/vector-icons';
+```bash
+rm -rf node_modules
+npm install
+npm start
 ```
 
-Se estiver rodando localmente, instale a dependência:
+No Windows PowerShell:
+
+```powershell
+Remove-Item -Recurse -Force node_modules
+npm install
+npm start
+```
+
+### Erro com ícones
 
 ```bash
 npx expo install @expo/vector-icons
 ```
 
-### As imagens não aparecem
+### As imagens dos produtos não aparecem
 
-A versão atual usa URLs externas. Verifique se o dispositivo ou navegador está conectado à internet. Se trocar por imagens locais, confirme se os arquivos existem na pasta `assets/` e se o caminho usado no `require` está correto.
+O cardápio usa URLs externas. Confira se o dispositivo está conectado à internet.
 
 ### O status aberto/fechado parece incorreto
 
-O cálculo usa o horário do dispositivo onde o app está rodando. Confira a data, a hora e o fuso horário do celular ou emulador.
-
-### O arquivo não roda no Snack
-
-No Snack, o arquivo principal deve se chamar `App.js`. Se você copiou o arquivo como `app.js`, renomeie ou cole o conteúdo dentro de `App.js`.
+O cálculo usa a data e hora do dispositivo. Confira o relógio e o fuso horário do celular ou emulador.
