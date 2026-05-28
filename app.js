@@ -68,20 +68,19 @@ const HORARIOS = [
 
 // ─────────────────────────────────────────────────────────────
 // DADOS - Cardapio (10 itens obrigatorios)
-// Para a entrega final: substituir "imagem" por
-//   require('./assets/produto1.jpg')
+// Imagens podem ser locais via require(...) ou externas via URL.
 // ─────────────────────────────────────────────────────────────
 const CARDAPIO = [
-    { id: '1', nome: 'Sashimi de Salmão', preco: 28.90, imagem: 'https://placehold.co/210x210/C62828/FFFFFF?text=Salmão', descricao: '6 fatias de salmão fresco, shoyu e wasabi' },
-    { id: '2', nome: 'Sashimi de Atum', preco: 32.90, imagem: 'https://placehold.co/210x210/1A1A2E/FFFFFF?text=Atum', descricao: '6 fatias de atum premium com gengibre em conserva' },
-    { id: '3', nome: 'Combinado Sashimi 20 peças', preco: 65.90, imagem: 'https://placehold.co/210x210/880E4F/FFFFFF?text=Combinado', descricao: 'Mix de salmão, atum, peixe branco e camarão' },
-    { id: '4', nome: 'Temaki Salmão Cream Cheese', preco: 22.90, imagem: 'https://placehold.co/210x210/4527A0/FFFFFF?text=Temaki', descricao: 'Cone de alga com salmão, cream cheese e pepino' },
+    { id: '1', nome: 'Sashimi de Salmão', preco: 28.90, imagem: require('./assets/products/sashimi-salmao.png'), descricao: '6 fatias de salmão fresco, shoyu e wasabi' },
+    { id: '2', nome: 'Sashimi de Atum', preco: 32.90, imagem: require('./assets/products/sashimi-atum.png'), descricao: '6 fatias de atum premium com gengibre em conserva' },
+    { id: '3', nome: 'Combinado Sashimi 20 peças', preco: 65.90, imagem: require('./assets/products/combinado-sashimi-20-pecas.png'), descricao: 'Mix de salmão, atum, peixe branco e camarão' },
+    { id: '4', nome: 'Temaki Salmão Cream Cheese', preco: 22.90, imagem: require('./assets/products/temaki-salmao.png'), descricao: 'Cone de alga com salmão, cream cheese e pepino' },
     { id: '5', nome: 'Uramaki Califórnia (8 un.)', preco: 24.90, imagem: 'https://placehold.co/210x210/1565C0/FFFFFF?text=Califórnia', descricao: 'Arroz por fora, kani, pepino e manga' },
     { id: '6', nome: 'Nigiri de Camarão (4 un.)', preco: 19.90, imagem: 'https://placehold.co/210x210/E65100/FFFFFF?text=Nigiri', descricao: 'Camarão grelhado sobre bolinha de arroz temperado' },
     { id: '7', nome: 'Hot Roll de Salmão (8 un.)', preco: 26.90, imagem: 'https://placehold.co/210x210/BF360C/FFFFFF?text=Hot+Roll', descricao: 'Rolinho frito com salmão e cream cheese' },
     { id: '8', nome: 'Combinado Sushi 30 peças', preco: 89.90, imagem: 'https://placehold.co/210x210/1B5E20/FFFFFF?text=30+Peças', descricao: 'Hossomaki, uramaki, niguiri e temaki mini' },
-    { id: '9', nome: 'Gunkan de Salmão (4 un.)', preco: 21.90, imagem: 'https://placehold.co/210x210/4E342E/FFFFFF?text=Gunkan', descricao: 'Gunkan com roe de salmão e cebolinha verde' },
-    { id: '10', nome: 'Temaki Tuna Spicy', preco: 23.90, imagem: 'https://placehold.co/210x210/B71C1C/FFFFFF?text=Tuna+Spicy', descricao: 'Atum picante, sriracha e pepino crocante' },
+    { id: '9', nome: 'Gunkan de Salmão (4 un.)', preco: 21.90, imagem: require('./assets/products/gunkan-salmao.png'), descricao: 'Gunkan com roe de salmão e cebolinha verde' },
+    { id: '10', nome: 'Temaki Tuna Spicy', preco: 23.90, imagem: require('./assets/products/temaki-tuna-spicy.png'), descricao: 'Atum picante, sriracha e pepino crocante' },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -102,6 +101,10 @@ function verificarAberto() {
 
 function formatarPreco(valor) {
     return valor.toFixed(2).replace('.', ',');
+}
+
+function getImagemSource(imagem) {
+    return typeof imagem === 'string' ? { uri: imagem } : imagem;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -187,7 +190,7 @@ function ProductCard({ produto }) {
     return (
         <View style={s.card}>
             <View style={s.cardImageWrap}>
-                <Image source={{ uri: produto.imagem }} style={s.cardImg} resizeMode="cover" />
+                <Image source={getImagemSource(produto.imagem)} style={s.cardImg} resizeMode="cover" />
                 <View style={s.cardImageShade} />
             </View>
 

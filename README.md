@@ -26,8 +26,11 @@ Atividade-ProjetoFinal-ExpoGo/
     |-- splash-icon.png
     |-- products/
         |-- combinado-sashimi-20-pecas.png
+        |-- gunkan-salmao.png
         |-- sashimi-atum.png
         |-- sashimi-salmao.png
+        |-- temaki-salmao.png
+        |-- temaki-tuna-spicy.png
 ```
 
 Arquivos e pastas removidos da estrutura antiga:
@@ -37,7 +40,7 @@ Arquivos e pastas removidos da estrutura antiga:
 - `components/AssetExample.js`: componente de exemplo do template Snack.
 - `assets/snack-icon.png`: imagem padrão do Snack sem uso no `app.json`.
 - `screens/`: pasta usada incorretamente para guardar imagem.
-- Imagens soltas na raiz: movidas para `assets/products/`.
+- Imagens do cardápio: organizadas em `assets/products/` e otimizadas para importação no Expo Snack.
 
 ## Funcionalidades
 
@@ -140,12 +143,14 @@ Cada item segue este formato:
     id: '1',
     nome: 'Sashimi de Salmão',
     preco: 28.90,
-    imagem: 'https://placehold.co/210x210/C62828/FFFFFF?text=Salmão',
+    imagem: require('./assets/products/sashimi-salmao.png'),
     descricao: '6 fatias de salmão fresco, shoyu e wasabi'
 }
 ```
 
-Há imagens locais organizadas em `assets/products/`, caso queira substituir os placeholders dos produtos depois.
+O cardápio usa imagens locais quando elas existem em `assets/products/`. Os itens sem imagem local continuam usando URLs externas como fallback.
+
+Evite imagens muito grandes no repositório, porque o Snack pode falhar ao importar assets pesados. As imagens atuais foram reduzidas para uso mobile.
 
 ## Checklist
 
